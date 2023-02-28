@@ -1,0 +1,28 @@
+{
+  "name": "@zhengt/rangelist",
+  "version": "0.0.1",
+  "author": "Zheng Te <tezheng1982@gmail.com>",
+  "description": "A test",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "src/**/*",
+    "index.js"
+  ],
+  "main": "index.js",
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["clover", "json", "html", "text"]
+  },
+  "scripts": {
+    "clean": "rm -rf coverage",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx --loglevel=error jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^29.4.3"
+  },
+  "engines": {
+    "node": "^14.15 || ^16.13 || ^18.14"
+  },
+  "packageManager": "npm@9.5.0"
+}
