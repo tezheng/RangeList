@@ -55,3 +55,8 @@ jobs:
           "description": "Tests failed",
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
+
+    - name: Generating coverage badges
+      uses: jpb06/jest-badges-action@latest
+      with:
+        branches: main,preprod,staging
