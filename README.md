@@ -2,7 +2,7 @@
 # RangeList
 
 [![Test CI](https://github.com/tezheng/RangeList/actions/workflows/test.ci.js.yml/badge.svg)](https://github.com/tezheng/RangeList/actions/workflows/test.ci.js.yml)
-[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/tezheng/a11b042bdf3426b5b12fe325cd388e71/raw/rangelist__heads_main.json)]
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/tezheng/a11b042bdf3426b5b12fe325cd388e71/raw/rangelist__heads_main.json)](https://github.com/tezheng/RangeList/actions/workflows/test.ci.js.yml)
 
 ## Prerequests
 
