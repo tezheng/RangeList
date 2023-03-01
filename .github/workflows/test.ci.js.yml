@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,7 +25,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm test
+    - run: npm install
+    - run: npm run jest:ci
+    - run: npm run jest:coverage-badge
 
     - name: Tests ✅
       if: ${{ success() }}
@@ -55,3 +56,41 @@ jobs:
           "description": "Tests failed",
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
+
+    # https://github.com/marketplace/actions/jest-badges-generation-action
+    # - name: Generating coverage badges
+    #   uses: jpb06/jest-badges-action@latest
+    #   with:
+    #     branches: main,preprod,staging
+
+    # - name: Coverage badge
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: badge-lines
+    #     path: coverage/badge-lines.svg
+    #     if-no-files-found: error
+
+    - if: ${{ matrix.node-version == '18.x' }}
+      name: Get coverage badge file name
+      run: |
+        # var REF = 'refs/pull/27/merge.json';
+        REF=${{ github.ref }}
+        # console.log('github.ref: ' + REF);
+        echo "github.ref: $REF"
+        # var PATHS = REF.split('/');
+        IFS='/' read -ra PATHS <<< "$REF"
+        # var BRANCH_NAME = PATHS[1] + '_' + PATHS[2];
+        BRANCH_NAME="${PATHS[1]}_${PATHS[2]}"
+        # console.log(BRANCH_NAME); // 'pull_27'
+        echo $BRANCH_NAME
+        # process.env.BRANCH = 'pull_27';
+        echo "BRANCH=$(echo ${BRANCH_NAME})" >> $GITHUB_ENV
+  
+    - if: ${{ matrix.node-version == '18.x' }}
+      name: Upload coverage badge to gist
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.GIST_SECRET }}
+        gist_id: a11b042bdf3426b5b12fe325cd388e71
+        file_path: coverage/badge-info.json
+        gist_file_name: rangelist__${{ env.BRANCH }}.json
