@@ -12,11 +12,19 @@
   "main": "index.js",
   "jest": {
     "collectCoverage": true,
-    "coverageReporters": ["clover", "json", "html", "text"]
+    "coverageReporters": [
+      "clover",
+      "json",
+      "json-summary",
+      "html",
+      "text"
+    ]
   },
   "scripts": {
     "clean": "rm -rf coverage",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx --loglevel=error jest --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx --loglevel=error jest --coverage",
+    "jest:ci": "NODE_OPTIONS=--experimental-vm-modules npx jest --ci --coverage",
+    "jest:coverage-badge": "node scripts/jest/coverage_badge.js"
   },
   "devDependencies": {
     "jest": "^29.4.3"
