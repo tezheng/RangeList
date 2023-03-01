@@ -58,7 +58,7 @@ describe('RangeList add/remove', () => {
     [[20, 21], '[1, 5) [10, 21)'],
     [[2, 4], '[1, 5) [10, 21)'],
     [[3, 8], '[1, 8) [10, 21)'],
-  ])('Add [%i] should be %i', (val, expected) => {
+  ])('Add %p should be %p', (val, expected) => {
     rl.add(val);
     expect(rl.toString()).toBe(expected);
   });
@@ -69,8 +69,61 @@ describe('RangeList add/remove', () => {
     [[15, 17], '[1, 8) [11, 15) [17, 21)'],
     [[3, 19], '[1, 3) [19, 21)'],
     [[-100, 100], ''],
-  ])('Remove [%i] should be %i', (val, expected) => {
+  ])('Remove %p should be %p', (val, expected) => {
     rl.remove(val);
     expect(rl.toString()).toBe(expected);
+  });
+});
+
+describe('RangeList query/intersect', () => {
+  const rl = new RangeList();
+  rl.add([1, 5]);
+  rl.add([12, 16]);
+  rl.add([20, 25]);
+  rl.add([30, 40]);
+
+  test('Invalid input should return empty range', () => {
+    expect(rl.has([])).toBeFalsy();
+    expect(rl.has([1])).toBeFalsy();
+    expect(rl.has([1, 2, 3])).toBeFalsy();
+    expect(rl.has([1, -1])).toBeFalsy();
+    expect(rl.has([1, 1])).toBeFalsy();
+    expect(rl.has(['1', '2'])).toBeFalsy();
+
+    expect(rl.intersect([])).toBe(null);
+    expect(rl.intersect([1])).toBe(null);
+    expect(rl.intersect([1, 2, 3])).toBe(null);
+    expect(rl.intersect([1, 1])).toBe(null);
+    expect(rl.intersect([1, -1])).toBe(null);
+    expect(rl.intersect(['1', '2'])).toBe(null);
+  });
+
+  test.each([
+    [[2, 3], true],
+    [[13, 15], true],
+    [[12, 16], true],
+    [[21, 25], true],
+    [[0, 2], false],
+    [[30, 41], false],
+    [[10, 32], false],
+  ])('Query %p should be %p', (range, expected) => {
+    expect(rl.has(range)).toBe(expected);
+  });
+
+  test.each([
+    [[2, 3], '[2, 3)'],
+    [[12, 16], '[12, 16)'],
+    [[21, 25], '[21, 25)'],
+    [[100, 200], null],
+    [[0, 2], '[1, 2)'],
+    [[29, 41], '[30, 40)'],
+    [[10, 32], '[12, 16) [20, 25) [30, 32)'],
+  ])('Intersect with %p should be %p', (range, expected) => {
+    const result = rl.intersect(range);
+    if (result) {
+      expect(result.toString()).toBe(expected);
+    } else {
+      expect(result).toBeNull();
+    }
   });
 });

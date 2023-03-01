@@ -143,6 +143,52 @@ class RangeList {
 
   /**
    *
+   * See if range list contains a certain range
+   * @param {Array<number>} range - Array of two integers that specify beginning
+   * and end of range.
+   * @returns True if the range list contains the range, false otherwise
+   */
+  has(range) {
+    if (!RangeList.#validate(range)) {
+      return false;
+    }
+
+    const [x, y] = range;
+    const left = insertRight(this.#rangeList, x);
+    const right = insertLeft(this.#rangeList, y);
+
+    return left == right && left % 2 == 1;
+  }
+
+  /**
+   *
+   * Get the intersection of the input range and the range list
+   * @param {Array<number>} range - Array of two integers that specify beginning
+   * and end of range.
+   * @returns A new range list, or null if no intersection found or the input is invalid
+   */
+  intersect(range) {
+    if (!RangeList.#validate(range)) {
+      return null;
+    }
+
+    const [x, y] = range;
+    const left = insertRight(this.#rangeList, x);
+    const right = insertLeft(this.#rangeList, y);
+
+    let newArr = []
+    if (left % 2 === 1) {
+      newArr = newArr.concat(x);
+    }
+    newArr = newArr.concat(this.#rangeList.slice(left, right));
+    if (right % 2 === 1) {
+      newArr = newArr.concat(y);
+    }
+    return newArr.length !== 0 ? RangeList.#fromArray(newArr) : null;
+  }
+
+  /**
+   *
    * Convert the list of ranges in the range list to a string
    * @returns A string representation of the range list
    */
@@ -184,6 +230,18 @@ class RangeList {
     }
 
     return true;
+  }
+
+  /**
+   *
+   * Construct a new range list based on an array
+   * @param {Array<number>} ranges - A list of range
+   * @returns The new range list object
+   */
+  static #fromArray(ranges) {
+    const rl = new RangeList();
+    rl.#rangeList = ranges;
+    return rl
   }
 }
 

@@ -31,3 +31,7 @@ console.log(rl.toString());
 npm install
 npm test
 ```
+
+## License
+
+MIT
