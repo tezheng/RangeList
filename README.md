@@ -1,6 +1,8 @@
 
 # RangeList
 
+[![Test CI](https://github.com/tezheng/RangeList/actions/workflows/test.ci.js.yml/badge.svg)](https://github.com/tezheng/RangeList/actions/workflows/test.ci.js.yml)
+
 ## Prerequests
 
 
